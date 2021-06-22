@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Serie extends Model
 {
-    public $timestamps = false;
+    use SoftDeletes;
+
     protected $fillable = ['name'];
     protected $appends = ["links"];
 
@@ -15,7 +17,7 @@ class Serie extends Model
         return $this->hasMany(Episode::class);
     }
 
-    public function getLinksAttribute($links): array
+    public function getLinksAttribute(): array
     {
         return [
             "self" => "/api/series/" . $this->id,
