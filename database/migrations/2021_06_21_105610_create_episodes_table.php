@@ -21,6 +21,9 @@ class CreateEpisodesTable extends Migration
             $table->integer("series_id");
 
             $table->foreign("series_id")->references("id")->on("series");
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
