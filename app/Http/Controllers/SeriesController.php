@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Episode;
-use App\Models\Serie;
+use App\Repositories\Eloquent\SerieRepository;
+use App\Repositories\EloquentRepositoryInterface;
 use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
-    public function __construct()
+    /** @var SerieRepository */
+    protected EloquentRepositoryInterface $repository;
+    public function __construct(SerieRepository $serieRepository)
     {
-        $this->model = new Serie();
+        parent::__construct($serieRepository);
     }
 
     public function episodes(int $serieId, Request $request)
     {
-        $episodes = Episode::query()
-            ->where("series_id", $serieId)
-            ->paginate($request->per_page);
+        $episodes = $this->episodes($serieId, $request->per_page);
 
         return response()->json($episodes);
     }

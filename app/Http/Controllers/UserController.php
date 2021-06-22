@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\EloquentRepositoryInterface;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function __construct()
+    /** @var UserRepository */
+    protected EloquentRepositoryInterface $repository;
+    public function __construct(UserRepository $userRepository)
     {
-        $this->model = new User();
+        parent::__construct($userRepository);
     }
 
     public function login(Request $request)
@@ -21,7 +24,7 @@ class UserController extends Controller
             "password" => "required"
         ]);
 
-        $user = $this->model->query()->where("email", $request->email)->first();
+        $user = $this->repository->login($request->email);
 
 
         if (is_null($user) || !Hash::check($request->password, $user->password)) {

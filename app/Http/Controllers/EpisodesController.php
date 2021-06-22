@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Episode;
+use App\Repositories\Eloquent\EpisodeRepository;
+use App\Repositories\EloquentRepositoryInterface;
 
 class EpisodesController extends Controller
 {
-    public function __construct()
+    /** @var EpisodeRepository */
+    protected EloquentRepositoryInterface $repository;
+    public function __construct(EpisodeRepository $episodeRepository)
     {
-        $this->model = new Episode();
+        parent::__construct($episodeRepository);
     }
 }
