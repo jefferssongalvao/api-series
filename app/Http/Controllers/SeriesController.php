@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 
-class SeriesController
+class SeriesController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        return Serie::all();
+        $this->model = new Serie();
     }
 }
