@@ -20,7 +20,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(["prefix" => "api"], function () use ($router) {
+$router->group(["prefix" => "api", "middleware" => "auth"], function () use ($router) {
     $router->group(["prefix" => "series"], function () use ($router) {
         $router->get('', "SeriesController@index");
         $router->post('', "SeriesController@store");
@@ -29,11 +29,14 @@ $router->group(["prefix" => "api"], function () use ($router) {
         $router->delete('{serieId}', "SeriesController@destroy");
         $router->get('{serieId}/episodes', "SeriesController@episodes");
     });
+
     $router->group(["prefix" => "episodes"], function () use ($router) {
         $router->get('', "EpisodesController@index");
         $router->post('', "EpisodesController@store");
-        $router->get('{id}', "EpisodesController@show");
-        $router->put('{id}', "EpisodesController@update");
-        $router->delete('{id}', "EpisodesController@destroy");
+        $router->get('{episodeId}', "EpisodesController@show");
+        $router->put('{episodeId}', "EpisodesController@update");
+        $router->delete('{episodeId}', "EpisodesController@destroy");
     });
 });
+
+$router->post("api/login", "UserController@login");
